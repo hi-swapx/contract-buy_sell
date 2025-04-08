@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.28;
+pragma solidity 0.8.24;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "../types/Params.sol";
 
@@ -9,12 +10,14 @@ import "../types/Params.sol";
 // import "hardhat/console.sol";
 
 contract BuySell is Ownable {
+    using SafeERC20 for IERC20;
+
     mapping(address => bool) tokenAddresses;
     address[] tokens;
     event Deposit(uint256 amount, address tokenAddress);
     event Withdraw(uint256 amount, address tokenAddress, address toAddress);
+    event AddSupportToken(address tokenAddress);
 
-    error NotSupportToken(address tokenAddress);
     error AllowanceError();
 
     constructor() Ownable(msg.sender) {}
@@ -24,31 +27,23 @@ contract BuySell is Ownable {
         require(!tokenAddresses[_tokenAddress], "Duplicate Token");
         tokenAddresses[_tokenAddress] = true;
         tokens.push(_tokenAddress);
+        emit AddSupportToken(_tokenAddress);
     }
 
-    function getSupportToken() public view returns (address[] memory) {
-        return tokens;
-    }
-
-    function deposit(DepositParams calldata params) public payable {
+    function deposit(DepositParams calldata params) public {
         require(tokenAddresses[params.tokenAddress], "Invalid Token");
         IERC20 token = IERC20(params.tokenAddress);
         uint256 allowedAmount = token.allowance(msg.sender, address(this));
         if (allowedAmount < params.amount) {
             revert AllowanceError();
         }
-        bool tfRes = token.transferFrom(
-            msg.sender,
-            address(this),
-            params.amount
-        );
-        require(tfRes);
+        token.safeTransferFrom(msg.sender, address(this), params.amount);
         emit Deposit(params.amount, params.tokenAddress);
     }
 
     function withdraw(WithdrawParams calldata params) public onlyOwner {
         IERC20 token = IERC20(params.tokenAddress);
-        token.transfer(params.toAddress, params.amount);
+        token.safeTransfer(params.toAddress, params.amount);
         emit Withdraw(params.amount, params.tokenAddress, params.toAddress);
     }
 }
