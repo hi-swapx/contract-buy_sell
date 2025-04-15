@@ -17,3 +17,5 @@ node_modules
 ignition/deployments/**/*
 
 push.sh
+
+hardhat.config.local.ts

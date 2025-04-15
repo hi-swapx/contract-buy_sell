@@ -7,8 +7,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: [
         {
-          privateKey:
-            "61a2081763b9519e7abcffd20a064fce4add4878ffc55c708c4788d9cf18ee27",
+          privateKey: "",
           balance: "9000000000000000000000000",
         },
       ],
@@ -16,27 +15,19 @@ const config: HardhatUserConfig = {
     holesky: {
       // url: "https://rpc.ankr.com/eth_holesky",
       url: "https://blockchain.googleapis.com/v1/projects/compact-nirvana-444108-k6/locations/asia-east1/endpoints/ethereum-holesky/rpc?key=AIzaSyCWNQxcEg3xIY_R6PizTkSvHgoDALT6r5Y",
-      accounts: [
-        "61a2081763b9519e7abcffd20a064fce4add4878ffc55c708c4788d9cf18ee27",
-      ],
+      accounts: [""],
     },
     sepolia: {
       url: "https://blockchain.googleapis.com/v1/projects/compact-nirvana-444108-k6/locations/asia-east1/endpoints/ethereum-sepolia/rpc?key=AIzaSyCWNQxcEg3xIY_R6PizTkSvHgoDALT6r5Y",
-      accounts: [
-        "61a2081763b9519e7abcffd20a064fce4add4878ffc55c708c4788d9cf18ee27",
-      ],
+      accounts: [""],
     },
     bsctest: {
       url: "https://rpc.ankr.com/bsc_testnet_chapel/de03c023c366ee00c499e88d082dc0849b68ee22735f026a42fddbf1182cf5ff",
-      accounts: [
-        "61a2081763b9519e7abcffd20a064fce4add4878ffc55c708c4788d9cf18ee27",
-      ],
+      accounts: [""],
     },
     xonetest: {
       url: "https://rpc-testnet.xone.plus",
-      accounts: [
-        "61a2081763b9519e7abcffd20a064fce4add4878ffc55c708c4788d9cf18ee27",
-      ],
+      accounts: [""],
     },
   },
 };

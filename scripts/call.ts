@@ -1,6 +1,6 @@
 import hre from "hardhat";
 
-const BSAddr = "0x1E353BfA97200e003F3cebd79069377d27F7477d";
+const BSAddr = "0xE148717F79E1a255CBCB510c405943C8be9Eb371";
 const Token1Addr = "0xEFDDe9279b747C57A3aAA70796EB5679cAEd51a2";
 
 const delay = (time: number) => {
@@ -42,7 +42,15 @@ async function withdraw() {
   console.log("withdraw hash:", hash);
 }
 
+async function checkIsExist() {
+  const bs = await hre.ethers.getContractAt("BuySell", BSAddr);
+  const isSupport = await bs.checkIsSupportToken(Token1Addr);
+
+  console.log("is support token:", isSupport);
+}
+
 async function main() {
+  await checkIsExist();
   // await addSupportToken();
   // await delay(3000);
   // await getSupportToken();

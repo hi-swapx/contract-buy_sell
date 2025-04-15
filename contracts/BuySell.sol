@@ -17,6 +17,7 @@ contract BuySell is Ownable {
     event Deposit(uint256 amount, address tokenAddress);
     event Withdraw(uint256 amount, address tokenAddress, address toAddress);
     event AddSupportToken(address tokenAddress);
+    event RemoveSupportToken(address tokenAddress);
 
     error AllowanceError();
 
@@ -26,8 +27,20 @@ contract BuySell is Ownable {
         require(_tokenAddress != address(0), "Token address cannot be zero"); // Check for valid address
         require(!tokenAddresses[_tokenAddress], "Duplicate Token");
         tokenAddresses[_tokenAddress] = true;
-        tokens.push(_tokenAddress);
         emit AddSupportToken(_tokenAddress);
+    }
+
+    function removeSupportToken(address _tokenAddress) public onlyOwner {
+        require(_tokenAddress != address(0), "Token address cannot be zero"); // Check for valid address
+        require(tokenAddresses[_tokenAddress], "Token address does not exist");
+        delete tokenAddresses[_tokenAddress];
+        emit RemoveSupportToken(_tokenAddress);
+    }
+
+    function checkIsSupportToken(
+        address _tokenAddress
+    ) public view returns (bool) {
+        return tokenAddresses[_tokenAddress];
     }
 
     function deposit(DepositParams calldata params) public {
